@@ -166,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="EBO.png" />
+    <Image Include="other\awesomeface.png" />
     <Image Include="other\container.jpg" />
     <Image Include="Triangle.png" />
   </ItemGroup>
