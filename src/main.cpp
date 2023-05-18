@@ -1,8 +1,9 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <Shader.h>
-
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
+#include "Shader.h"
 #include <iostream>
+
+#include "stb_image.h"
 
 // settings
 const unsigned int SCREEN_WIDTH = 800;
@@ -47,12 +48,11 @@ int main()
 	Shader ourShader("other/shader.vert", "other/shader.frag"); // you can name your shader files however you like
 
 
-
 	// setting up vertex data
 	float vertices[] = {
-		0.5f, -0.5f, 0.0f,	 1.0f, 0.0f, 0.0f, // bottom-right
-	   -0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f, // bottom-left
-		0.0f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f  // top
+		0.5f, -0.5f, 0.0f,	 /* 1.0f, 0.0f, 0.0f, */ // bottom-right
+	   -0.5f, -0.5f, 0.0f,   /* 0.0f, 1.0f, 0.0f, */ // bottom-left
+		0.0f,  0.5f, 0.0f,   /* 0.0f, 0.0f, 1.0f  */ // top
 	};
 
 	/* triangle stuff */
@@ -62,20 +62,36 @@ int main()
 
 	glBindVertexArray(VAO);
 
-
 	unsigned int VBO;
 
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	// position attribute: 
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
+	// color attribute: 
+	/*glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);*/
 
+
+	// Texture
+	float texCoords[] = {
+		0.0f, 0.0f,  // lower-left corner  
+		1.0f, 0.0f,  // lower-right corner
+		0.5f, 1.0f   // top-center corner
+	};
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	// glBindVertexArray(0);
 
@@ -91,7 +107,7 @@ int main()
 		// THE TRIANGLE!!!
 		ourShader.use();
 
-		ourShader.setFloat("xOffset", 0.5f);
+		// ourShader.setFloat("xOffset", 0.5f);
 
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);

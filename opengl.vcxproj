@@ -149,17 +149,25 @@
   <ItemGroup>
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\stb.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Shader.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
     <None Include="LICENSE" />
     <Text Include="other\shader.frag">
       <FileType>Document</FileType>
     </Text>
     <None Include="other\shader.vert" />
     <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="EBO.png" />
+    <Image Include="other\container.jpg" />
+    <Image Include="Triangle.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -27,6 +27,9 @@
     <ClCompile Include="src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\stb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Shader.h">
@@ -37,8 +40,21 @@
     <None Include="other\shader.vert" />
     <None Include="LICENSE" />
     <None Include="README.md" />
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="other\shader.frag" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="other\container.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="EBO.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Triangle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
