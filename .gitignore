@@ -363,4 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 dependencies/include/*
-dependencies/lib/*
+dependencies/libs/*

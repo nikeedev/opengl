@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\dev\cpp\opengl\include;C:\dev\cpp\opengl\dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\dev\cpp\opengl\dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -152,12 +152,15 @@
     <ClCompile Include="src\stb.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Shader.h" />
+    <ClInclude Include="src\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
     <None Include="LICENSE" />
+    <ClInclude Include="src\main.cpp.backup">
+      <FileType>Document</FileType>
+    </ClInclude>
     <Text Include="other\shader.frag">
       <FileType>Document</FileType>
     </Text>
@@ -168,6 +171,7 @@
     <Image Include="EBO.png" />
     <Image Include="other\awesomeface.png" />
     <Image Include="other\container.jpg" />
+    <Image Include="Textures.png" />
     <Image Include="Triangle.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

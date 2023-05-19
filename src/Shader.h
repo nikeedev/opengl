@@ -104,6 +104,8 @@ public:
 		glUseProgram(ID);
 	}
 
+
+	// Set's
 	void setBool(const std::string& name, bool value) const
 	{
 		glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
@@ -117,5 +119,11 @@ public:
 	void setFloat(const std::string& name, float value) const
 	{
 		glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+	}
+	
+	// Get's
+	void getFloat(const std::string& name) const
+	{
+		glGetUniformfv(ID, glGetUniformLocation(ID, name.c_str()));
 	}
 };

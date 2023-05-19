@@ -6,9 +6,12 @@ layout (location = 2) in vec2 aTexCoord;
 out vec3 ourColor;
 out vec2 TexCoord;
 
+uniform int posX;
+uniform int posY;
+
 void main()
 {
-   gl_Position = vec4(aPos, 1.0f);
+   gl_Position = vec4(posX, posY, aPos.z, 1.0f);
    ourColor = aColor;
    TexCoord = vec2(aTexCoord.x, aTexCoord.y);
 };

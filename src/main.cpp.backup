@@ -13,8 +13,7 @@ const unsigned int SCREEN_HEIGHT = 850;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
-float posX = 0.0f;
-float posY = 0.0f;
+float mixValue = 0.2f;
 
 int main()
 {
@@ -185,9 +184,8 @@ int main()
 
 		// render container
 		ourShader.use();
-		ourShader.setFloat("posX", posX);
-		ourShader.setFloat("posY", posY);
-
+		ourShader.setFloat("visibility", mixValue);
+		
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -223,27 +221,15 @@ void processInput(GLFWwindow* window)
 
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 	{
-		posY += 0.001f;
-		if (posY > 1.0f)
-			posY = 1.0f;
+		mixValue += 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
+		if (mixValue > 1.0f)
+			mixValue = 1.0f;
 	}
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 	{
-		posY -= 0.001f; 
-		if (posY < 0.0f)
-			posY = 0.0f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-	{
-		posX += 0.001f;
-		if (posX > 1.0f)
-			posX = 1.0f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-	{
-		posX -= 0.001f;
-		if (posX < 0.0f)
-			posX = 0.0f;
+		mixValue -= 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
+		if (mixValue < 0.0f)
+			mixValue = 0.0f;
 	}
 }
 

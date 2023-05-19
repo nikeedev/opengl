@@ -32,9 +32,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Shader.h">
+    <ClInclude Include="src\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\main.cpp.backup" />
   </ItemGroup>
   <ItemGroup>
     <None Include="other\shader.vert" />
@@ -57,6 +58,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="other\awesomeface.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
