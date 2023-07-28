@@ -124,6 +124,6 @@ public:
 	// Get's
 	void getFloat(const std::string& name) const
 	{
-		glGetUniformfv(ID, glGetUniformLocation(ID, name.c_str()));
+		glGetUniformfv(ID, glGetUniformLocation(ID, name.c_str()), 0);
 	}
 };
