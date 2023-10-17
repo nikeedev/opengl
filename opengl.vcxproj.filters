@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="glad">
-      <UniqueIdentifier>{bee43732-8dcb-4583-a0f4-ef3becbbd2f0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Fragments">
       <UniqueIdentifier>{40063f1d-4e67-4e77-b094-afc014aa17ea}</UniqueIdentifier>
     </Filter>
@@ -38,14 +35,13 @@
     <ClInclude Include="src\main.cpp.backup" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="other\shader.vert" />
     <None Include="LICENSE" />
     <None Include="README.md" />
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="other\shader.frag" />
+    <None Include="other\shader.vert">
+      <Filter>Fragments</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="other\container.jpg">
@@ -63,5 +59,10 @@
     <Image Include="Textures.png">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="other\shader.frag">
+      <Filter>Fragments</Filter>
+    </Text>
   </ItemGroup>
 </Project>
