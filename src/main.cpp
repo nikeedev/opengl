@@ -19,6 +19,7 @@
 const unsigned int SCREEN_WIDTH = 1000;
 const unsigned int SCREEN_HEIGHT = 850;
 glm::vec3 pos = glm::vec3(0.0f, 0.0f, -3.0f);
+glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f);
 
 
 // methods
@@ -249,7 +250,14 @@ int main()
 		glm::mat4 view = glm::mat4(1.0f);
 		glm::mat4 projection = glm::mat4(1.0f);
 
-
+		/* Mat4 to Quat */
+		glm::mat4 rotMatrix = glm::lookAt(pos, rotation, glm::vec3(0, 1, 0));		
+		glm::quat rotation = glm::quat_cast(rotMatrix);
+		
+		/* Quat to Mat4 */    
+		glm::mat4 identityMat = glm::mat4(1.0f);
+		glm::mat4 rotMatrix = glm::mat4_cast(rotation);   //rotation is glm::quat
+		glm::mat4 transMatrix = glm::translate(identityMat, position); 
 		// note that we're translating the scene in the reverse direction of where we want to move
 		view = glm::translate(view, pos);
 		projection = glm::perspective(glm::radians(90.0f), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.01f, 100.0f);
