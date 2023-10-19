@@ -250,14 +250,14 @@ int main()
 		glm::mat4 view = glm::mat4(1.0f);
 		glm::mat4 projection = glm::mat4(1.0f);
 
-		/* Mat4 to Quat */
-		glm::mat4 rotMatrix = glm::lookAt(pos, rotation, glm::vec3(0, 1, 0));		
-		glm::quat rotation = glm::quat_cast(rotMatrix);
-		
-		/* Quat to Mat4 */    
-		glm::mat4 identityMat = glm::mat4(1.0f);
-		glm::mat4 rotMatrix = glm::mat4_cast(rotation);   //rotation is glm::quat
-		glm::mat4 transMatrix = glm::translate(identityMat, position); 
+		auto pitch = glm::radians(20.0f);
+		auto yaw = glm::radians(20.0f);
+
+		auto pitch_rot = glm::angleAxis(pitch, glm::vec3(rotation.x, 0, 0)); // note, not sure how to create a vector in glm
+		auto yaw_rot = glm::angleAxis(yaw, glm::vec3(0, rotation.y, 0));
+
+		auto rotate = yaw_rot * pitch_rot;
+
 		// note that we're translating the scene in the reverse direction of where we want to move
 		view = glm::translate(view, pos);
 		projection = glm::perspective(glm::radians(90.0f), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.01f, 100.0f);
@@ -320,6 +320,15 @@ void processInput(GLFWwindow* window)
 		pos.y += speed;
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 		pos.y -= speed;
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		pos.x += speed;
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		pos.x -= speed;
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		pos.z += speed;
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		pos.z -= speed;
+
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 		pos.x += speed;
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
