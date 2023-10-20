@@ -364,3 +364,5 @@ FodyWeavers.xsd
 
 dependencies/include/*
 dependencies/libs/*
+
+src/glad.c

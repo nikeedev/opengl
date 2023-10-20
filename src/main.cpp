@@ -224,6 +224,7 @@ int main()
 		glm::vec3(1.5f,  2.0f, -2.5f),
 		glm::vec3(1.5f,  0.6f, -1.5f),
 		glm::vec3(-1.3f,  1.0f, -1.5f),
+		glm::vec3(-1.3f,  5.0f, -1.5f),
 	};
 
 	// loop
@@ -256,7 +257,6 @@ int main()
 		auto pitch_rot = glm::angleAxis(pitch, glm::vec3(rotation.x, 0, 0));
 		auto yaw_rot = glm::angleAxis(yaw, glm::vec3(0, rotation.y, 0));
 
-		glm::quat total_py = glm::normalize(yaw_rot * pitch_rot);
 		glm::quat rotate = glm::normalize(yaw_rot * pitch_rot);
 
 		// note that we're translating the scene in the reverse direction of where we want to move
@@ -296,7 +296,7 @@ int main()
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
-
+	
 	glfwTerminate();
 	return 0;
 }
