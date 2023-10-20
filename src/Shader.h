@@ -166,4 +166,8 @@ public:
 		glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 	}
 
+	void setMat4Cast(const std::string& name, const glm::quat& quat) const
+	{
+		glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &glm::mat4_cast(quat)[0][0]);
+	}
 };

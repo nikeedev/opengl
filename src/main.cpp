@@ -250,13 +250,14 @@ int main()
 		glm::mat4 view = glm::mat4(1.0f);
 		glm::mat4 projection = glm::mat4(1.0f);
 
-		auto pitch = glm::radians(20.0f);
-		auto yaw = glm::radians(20.0f);
+		auto pitch = glm::radians(8.0f);
+		auto yaw = glm::radians(8.0f);
 
-		auto pitch_rot = glm::angleAxis(pitch, glm::vec3(rotation.x, 0, 0)); // note, not sure how to create a vector in glm
+		auto pitch_rot = glm::angleAxis(pitch, glm::vec3(rotation.x, 0, 0));
 		auto yaw_rot = glm::angleAxis(yaw, glm::vec3(0, rotation.y, 0));
 
-		auto rotate = yaw_rot * pitch_rot;
+		glm::quat total_py = glm::normalize(yaw_rot * pitch_rot);
+		glm::quat rotate = glm::normalize(yaw_rot * pitch_rot);
 
 		// note that we're translating the scene in the reverse direction of where we want to move
 		view = glm::translate(view, pos);
@@ -264,7 +265,7 @@ int main()
 
 		ourShader.setMat4("view", view);
 		ourShader.setMat4("projection", projection);
-		
+		ourShader.setMat4Cast("rotate", rotate);
 		
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -313,7 +314,8 @@ void processInput(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 	
-	float speed = 0.01f;
+	float speed = 0.01f,
+		rotate_speed = 0.05f;
 
 	// Key controls pos
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
@@ -329,14 +331,14 @@ void processInput(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		pos.z -= speed;
 
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		pos.x += speed;
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		pos.x -= speed;
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		pos.z += speed;
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		pos.z -= speed;
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		rotation.y += rotate_speed;
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		rotation.y -= rotate_speed;
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+		rotation.x += rotate_speed;
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+		rotation.x -= rotate_speed;
 
 }
 
