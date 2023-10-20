@@ -1,13 +1,15 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "stb_image.h"
+#include <iostream>
+#include <vector>
 
 #include "Shader.h"
-#include <iostream>
+#include "Texture.h"
 
-#define _USE_MATH_DEFINES
-#include <math.h>
 
+
+#define log(x) std::cout << x << std::endl;
 
 // GLM:
 #include "glm/glm.hpp"
@@ -25,6 +27,7 @@ glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f);
 // methods
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
+
 
 int main()
 {
@@ -145,72 +148,23 @@ int main()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	// For textures:
-	unsigned int texture1, texture2;
 
 	///////////////
 	// 
-	// texture 1
+	// textures
 	//
 
-	glGenTextures(1, &texture1);
-	glBindTexture(GL_TEXTURE_2D, texture1);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	int width, height, nrChannels;
-
-	stbi_set_flip_vertically_on_load(true);
-
-	unsigned char* data = stbi_load("other/container.jpg", &width, &height, &nrChannels, 0);
-
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture1" << std::endl;
-	}
-
-	stbi_image_free(data);
-
-	//
-	/////////////////
-	// 
-	// texture 2
-	// 
-	glGenTextures(1, &texture2);
-
-	glBindTexture(GL_TEXTURE_2D, texture2);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	data = stbi_load("other/awesomeface.png", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture2" << std::endl;
-	}
-
-	stbi_image_free(data);
+	Texture texture1("other/container.jpg", GL_RGB, GL_RGB);
+	Texture texture2("other/awesomeface.png", GL_RGB, GL_RGBA);
 
 	ourShader.use();
 	ourShader.setInt("texture1", 0);
 	ourShader.setInt("texture2", 1);
+	
+	//
+	//
+	//
+	//////////////
 
 	// cube positions	
 	glm::vec3 cubePositions[] = {
@@ -226,6 +180,8 @@ int main()
 		glm::vec3(-1.3f,  1.0f, -1.5f),
 		glm::vec3(-1.3f,  5.0f, -1.5f),
 	};
+		
+	float rotation_speed = 0.3f;
 
 	// loop
 	while (!glfwWindowShouldClose(window))
@@ -238,11 +194,16 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture1);
+		/*glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture1.ID);
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, texture2);
+		glBindTexture(GL_TEXTURE_2D, texture2.ID);*/
+		
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture1.ID);
 
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texture2.ID);
 
 		// render container
 		ourShader.use();
@@ -251,21 +212,20 @@ int main()
 		glm::mat4 view = glm::mat4(1.0f);
 		glm::mat4 projection = glm::mat4(1.0f);
 
-		auto pitch = glm::radians(8.0f);
-		auto yaw = glm::radians(8.0f);
-
-		auto pitch_rot = glm::angleAxis(pitch, glm::vec3(rotation.x, 0, 0));
-		auto yaw_rot = glm::angleAxis(yaw, glm::vec3(0, rotation.y, 0));
+		auto pitch_rot = glm::angleAxis(rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+		auto yaw_rot = glm::angleAxis(rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
 
 		glm::quat rotate = glm::normalize(yaw_rot * pitch_rot);
 
 		// note that we're translating the scene in the reverse direction of where we want to move
 		view = glm::translate(view, pos);
 		projection = glm::perspective(glm::radians(90.0f), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.01f, 100.0f);
-
+		
+			
 		ourShader.setMat4("view", view);
 		ourShader.setMat4("projection", projection);
 		ourShader.setMat4Cast("rotate", rotate);
+		
 		
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -302,7 +262,6 @@ int main()
 }
 
 
-
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
@@ -315,7 +274,7 @@ void processInput(GLFWwindow* window)
 		glfwSetWindowShouldClose(window, true);
 	
 	float speed = 0.01f,
-		rotate_speed = 0.05f;
+		rotate_speed = 0.01f;
 
 	// Key controls pos
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
