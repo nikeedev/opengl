@@ -57,6 +57,16 @@ int main()
 		return -1;
 	}
 
+	std::cout <<
+		"OpenGL, nikeedev project;\nOpenGL Version: " <<
+		glGetString(GL_VERSION) <<
+		"\nVendor: " <<
+		glGetString(GL_VENDOR) <<
+		"\nGPU (OpenGL Renderer): " <<
+		glGetString(GL_RENDERER) <<
+		"\nGLSL Version: " <<
+		glGetString(GL_SHADING_LANGUAGE_VERSION) << "\n" << std::endl;
+
 	// load icon
 
 	GLFWimage images[1] = {};
