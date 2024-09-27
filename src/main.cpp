@@ -3,6 +3,7 @@
 #include "stb_image.h"
 #include <iostream>
 #include <vector>
+#include <color.hpp>
 
 #include "Shader.h"
 #include "Texture.h"
@@ -58,14 +59,17 @@ int main()
 	}
 
 	std::cout <<
-		"OpenGL, nikeedev project;\nOpenGL Version: " <<
-		glGetString(GL_VERSION) <<
+		dye::aqua("OpenGL, nikeedev project;\n") <<
+		"GLFW version: " <<
+		dye::yellow(glfwGetVersionString()) <<
+		"\nOpenGL Version: " <<
+		dye::red(glGetString(GL_VERSION)) <<
 		"\nVendor: " <<
-		glGetString(GL_VENDOR) <<
+		dye::bright_white(glGetString(GL_VENDOR)) <<
 		"\nGPU (OpenGL Renderer): " <<
-		glGetString(GL_RENDERER) <<
+		dye::purple(glGetString(GL_RENDERER)) <<
 		"\nGLSL Version: " <<
-		glGetString(GL_SHADING_LANGUAGE_VERSION) << "\n" << std::endl;
+		dye::blue(glGetString(GL_SHADING_LANGUAGE_VERSION)) << "\n" << std::endl;
 
 	// load icon
 
@@ -173,7 +177,7 @@ int main()
 	ourShader.use();
 	ourShader.setInt("texture1", 0);
 	ourShader.setInt("texture2", 1);
-	
+
 	//
 	//
 	//
@@ -192,13 +196,8 @@ int main()
 		glm::vec3(1.5f,  0.6f, -1.5f),
 		glm::vec3(-1.3f,  1.0f, -1.5f),
 		glm::vec3(-1.3f,  5.0f, -1.5f),
-
-		glm::vec3(1.7f,  2.7f, -2.6f),
-		glm::vec3(1.7f,  0.7f, -1.7f),
-		glm::vec3(-1.4f,  1.1f, -1.7f),
-		glm::vec3(-1.6f,  4.4f, -1.4f),
 	};
-		
+
 	float rotation_speed = 0.3f;
 
 	std::cout << "Number of \"stuff\" in the array: " << cubePositions.size() << std::endl;
@@ -220,7 +219,7 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, texture1.ID);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2.ID);*/
-		
+
 		for (int i = 0; i < textures.size(); i++) {
 			glActiveTexture(GL_TEXTURE0 + i);
 			glBindTexture(GL_TEXTURE_2D, textures[i].ID);
@@ -229,7 +228,7 @@ int main()
 		// render container
 		ourShader.use();
 
-		
+
 		glm::mat4 view = glm::mat4(1.0f);
 		glm::mat4 projection = glm::mat4(1.0f);
 
@@ -241,18 +240,17 @@ int main()
 		// note that we're translating the scene in the reverse direction of where we want to move
 		view = glm::translate(view, pos);
 		projection = glm::perspective(glm::radians(90.0f), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.01f, 100.0f);
-		
-			
+
 		ourShader.setMat4("view", view);
 		ourShader.setMat4("projection", projection);
 		ourShader.setMat42QuatCast("rotate", rotate);
-		
-		
+
+
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glBindVertexArray(VAO);
-		
+
 		for (int i = 0; i < cubePositions.size() - 1; i++) {
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, cubePositions[i]);
@@ -263,7 +261,7 @@ int main()
 			ourShader.setMat4("model", model);
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
-		} 
+		}
 
 		//glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindVertexArray(0);
@@ -277,7 +275,7 @@ int main()
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
-	
+
 	glfwTerminate();
 	return 0;
 }
@@ -293,7 +291,7 @@ void processInput(GLFWwindow* window)
 
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
-	
+
 	float speed = 0.01f,
 		rotate_speed = 0.005f;
 
@@ -310,6 +308,8 @@ void processInput(GLFWwindow* window)
 		pos.z += speed;
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		pos.z -= speed;
+
+	std::printf("\nX:%i, Y:%i, Z:%i", pos.x / 100000, pos.y / 100000, pos.z / 100000);
 
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 		rotation.y += rotate_speed;
